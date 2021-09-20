@@ -1,7 +1,8 @@
 import { useState} from "react";
 import {useRouter} from "next/router";
 import {appendService} from "../api/hello";
-import {google} from "googleapis";
+const {google} = require('googleapis');
+const sheets = google.sheets('v4');
 
 export default function CreateRedirect() {
   const [url, setUrl] = useState('');

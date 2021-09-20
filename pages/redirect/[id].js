@@ -1,4 +1,5 @@
-import { google } from "googleapis";
+const {google} = require('googleapis');
+const sheets = google.sheets('v4');
 import {useEffect} from "react";
 
 export async function getServerSideProps( {query} ) {

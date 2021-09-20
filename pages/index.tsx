@@ -4,7 +4,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import {useState} from "react";
 import {useRouter} from "next/router";
-import {google} from "googleapis";
+const {google} = require('googleapis');
+const sheets = google.sheets('v4');
 
 const Home: NextPage = () => {
   const [url, setUrl] = useState('');

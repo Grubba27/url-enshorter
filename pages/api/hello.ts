@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {google} from "googleapis";
+const {google} = require('googleapis');
+const sheets = google.sheets('v4');
 
 
 type Data = {
