@@ -1,20 +1,41 @@
 import { useState} from "react";
 import {useRouter} from "next/router";
-import {compressUrl} from "../api/hello";
+import {appendService} from "../api/hello";
+import {google} from "googleapis";
 
 export default function CreateRedirect() {
   const [url, setUrl] = useState('');
 
   const route = useRouter();
   const generateSmallUrl = async (url:string) => {
-    const finalResult = compressUrl(url);
-    await route.push({pathname: `/create-redirect/${finalResult}`})
+    console.log(url);
+    const auth = await google.auth.getClient({scopes: 'https://www.googleapis.com/auth/spreadsheets'});
+    const sheets = google.sheets({ version: 'v4', auth});
+    const testRange = 'P1!B3:C3';
+    const values = [[`it ${url}`,`it ${url}`]];
+    const body = {
+      values: values
+    };
+
+    // @ts-ignore
+    const request = await sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.SHEET_ID,
+      range: testRange,
+      valueInputOption: 'RAW',
+      resource: body
+    });
+
+    // @ts-ignore
+    if (request.data.tableRange) {
+      // @ts-ignore
+      console.log(request.data.updates.updatedRange);
+    }
   }
 
   return (
     <div>
       <h1>redirect works</h1>
-      <input value={url} onInput={e => setUrl(e.target.value)}/>
+      <input value={url} onInput={e => setUrl(e.currentTarget.value)}/>
       <button onClick={() => generateSmallUrl(url)}> testa</button>
     </div>
   )
